@@ -32,7 +32,8 @@ app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/api/:model/:id', apiGET,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
+app.use('/api/:model/:id', apiGET.getItem,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
+app.use('/api/:model', apiGET.getCollection,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
 app.use('/users', users);
 app.use('/', routes);
 
