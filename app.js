@@ -14,6 +14,23 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+//	Database connexion
+var Sequelize = require('sequelize');
+var dbConfig = require('./database-config.json');
+var sequelize = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password,{
+	dialect:dbConfig.dialect,
+	host:dbConfig.host
+});
+sequelize.authenticate()
+    .then(function () {
+        console.log("CONNECTED! ");
+    })
+    .catch(function (err) {
+        console.log("SOMETHING DONE GOOFED");
+    })
+    .done();
+
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
