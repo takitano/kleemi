@@ -5,6 +5,13 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var apiGET = require('./routes/api/get');
+var apiPOST = require('./routes/api/post');
+var apiPUT = require('./routes/api/put');
+var apiDEL = require('./routes/api/delete');
+var apiOPT = require('./routes/api/options');
+var apiHEAD = require('./routes/api/head');
+var apiPATCH = require('./routes/api/patch');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -40,8 +47,10 @@ app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+
+app.use('/api/:model/:id', apiGET,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
 app.use('/users', users);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
