@@ -1,11 +1,7 @@
 'use strict';
-
 module.exports = function(sequelize, DataTypes) {
-  var <%= name %> = sequelize.define('<%= name %>', {
-    <% Object.keys(attributes).forEach(function(fieldName, index) { %>
-      <%= fieldName %>: DataTypes.<%= attributes[fieldName].toUpperCase() %>
-      <%= (Object.keys(attributes).length - 1) > index ? ',' : '' %>
-    <% }) %>
+  var test1 = sequelize.define('test1', {
+    name: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {
@@ -13,8 +9,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     }
   });
-
-  return <%= name %>;
+  return test1;
 };
 /*
 
