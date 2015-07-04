@@ -6,12 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var apiGET = require('./routes/api/get');
-var apiPOST = require('./routes/api/post');
+var modelVerif = require('./routes/api/model');
+/*var apiPOST = require('./routes/api/post');
 var apiPUT = require('./routes/api/put');
 var apiDEL = require('./routes/api/delete');
 var apiOPT = require('./routes/api/options');
-var apiHEAD = require('./routes/api/head');
 var apiPATCH = require('./routes/api/patch');
+*/var response = require('./routes/api/response');
+var apiHEAD = require('./routes/api/head');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
@@ -32,8 +34,8 @@ app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/api/:model/:id', apiGET.getItem,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
-app.use('/api/:model', apiGET.getCollection,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
+app.use('/api/:model/:id',modelVerif,apiHEAD,apiGET.getItem,response);//,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
+app.use('/api/:model',modelVerif,apiHEAD,apiGET.getCollection,response);//apiGET.getCollection,apiPOST,apiOPT,apiDEL,apiPUT,apiPATCH,
 app.use('/users', users);
 app.use('/', routes);
 
