@@ -5,8 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var verification = require('./routes/api/verification');
 var apiGET = require('./routes/api/get');
-var modelVerif = require('./routes/api/model');
 /*var apiPOST = require('./routes/api/post');
 var apiPUT = require('./routes/api/put');
 var apiDEL = require('./routes/api/delete');
@@ -34,8 +34,8 @@ app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-app.use('/api/:model/:id',modelVerif,apiHEAD,apiGET.getItem,response);//,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
-app.use('/api/:model',modelVerif,apiHEAD,apiGET.getCollection,response);//apiGET.getCollection,apiPOST,apiOPT,apiDEL,apiPUT,apiPATCH,
+app.use('/api/:model/:id',verification,apiHEAD,apiGET.getItem,response);//,apiPOST,apiOPT,apiDEL,apiHEAD,apiPUT,apiPATCH);
+app.use('/api/:model',verification,apiHEAD,apiGET.getCollection,response);//apiGET.getCollection,apiPOST,apiOPT,apiDEL,apiPUT,apiPATCH,
 app.use('/users', users);
 app.use('/', routes);
 

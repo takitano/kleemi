@@ -10,12 +10,14 @@
 */
 var models  = require('../../models');
 var util  = require('util');
+var verif  = require('./verification');
 
 module.exports = {
 
 	getItem : function(req, res, next) {
 		try{				
 			if(req.method =='GET'){
+			
 				models[req.params.model].findById(req.params.id).then(function(o) {
 					if(o == null)
 						throw('item not exists');
