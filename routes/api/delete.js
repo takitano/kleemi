@@ -1,5 +1,6 @@
-/*
-DELETE METHOD
+/**
+ * DELETE METHOD
+ * @author Takeshi Iri
  */
 var models = require('../../models');
 var util = require('util');

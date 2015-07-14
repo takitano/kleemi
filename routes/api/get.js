@@ -26,15 +26,16 @@ module.exports = {
                         throw('item not exists');
                     }
                     res.result = o.dataValues;
+					req.method = 200;
                     next();
                 }).catch (function (error) {
-                    next(error);
+                    throw new Error(500);
                 });
             } else {
                 next();
             }
         } catch (err) {
-            next(err);
+            throw new Error(500);
         }
     },
 
@@ -48,15 +49,16 @@ module.exports = {
                         data : o.rows,
                         total : o.count
                     };
+					req.method = 200;
                     next();
                 }).catch (function (error) {
-                    next(error);
+                    throw new Error(500);
                 });
             } else {
                 next();
             }
         } catch (err) {
-            next(err);
+           throw new Error(500);
         }
     }
 };

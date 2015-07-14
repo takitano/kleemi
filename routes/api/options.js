@@ -1,11 +1,18 @@
-/* 
-	OPTIONS METHOD 
-*/
-module.exports = function(req, res, next) {
+/**
+ * OPTIONS METHOD
+ * @author Takeshi Iri
+ */
 
-	if(req.method =='OPTIONS'){
-		res.send('OPTIONS '+req.params.model+' '+req.params.id);
-	}
-	else next();
-	
+ var models = require('../../models');
+var util = require('util');
+var verif = require('./verification');
+
+module.exports = function (req, res, next) {
+
+    if (req.method == 'OPTIONS') {
+		res.header('Allow' , 'GET PUT PATCH POST DELETE OPTIONS' );
+		next();
+    } else
+        next();
+
 };

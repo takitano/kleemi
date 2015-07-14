@@ -1,5 +1,6 @@
 /**
  * POST METHOD
+ * @author Takeshi Iri
  */
 var models = require('../../models');
 var util = require('util');
@@ -19,7 +20,7 @@ module.exports = {
                 // Vérify if element exists on table
                 models[req.params.model].findById(req.params.id).then(function (o) {
                     if (o === null) {
-                        throw('item not exists');
+                        throw new Error('item not exists');
                     }
                     // update element
                     o.update(req.body).then(function (oUpdated) {
