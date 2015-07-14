@@ -76,10 +76,14 @@ module.exports = function (err, req, res, next) {
         598 : "Network read timeout error",
         599 : "Network connect timeout error"
     };
-	if(err !==undefined){
-		res.result.message = tab[err.message];
-		}
-    else{
-		res.result.message = tab[req.method];
-	}console.log(res.result.message);
+
+    if (res.result === undefined) {
+        res.result = {};
+    }
+
+    if (err !== undefined && err.message !== undefined) {
+        res.result.message = tab[err.message];
+    } else {
+        res.result.message = tab[req.statusCode];
+    }
 };

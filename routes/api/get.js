@@ -20,22 +20,47 @@ module.exports = {
         'use strict';
         try {
             if (req.method === 'GET') {
-
+				// if model exists
+                if (models[req.params.model] !== undefined) {
                 models[req.params.model].findById(req.params.id).then(function (o) {
                     if (o === null) {
-                        throw('item not exists');
+                        throw new Error(404);
                     }
                     res.result = o.dataValues;
-					req.method = 200;
+                    req.statusCode = 200;
                     next();
                 }).catch (function (error) {
-                    throw new Error(500);
+                    throw new Error(404);
                 });
+				}
+				else{
+                    models.sequelize.query("SELECT count(1) as total FROM `" + req.params.model + "` WHERE id=:id", {
+                        type : models.sequelize.QueryTypes.SELECT,
+						replacements:{id:req.params.id}
+                    }).spread(function (total, metadata) {
+						if(total.total !==1)
+							throw new Error(404);
+							
+                        models.sequelize.query("SELECT * FROM `" + req.params.model + "` WHERE id=:id",{type : models.sequelize.QueryTypes.SELECT,
+						replacements:{id:req.params.id}}).spread(function (results, metadata) {
+                            res.result = {
+                                data : results,
+                                total : total.total
+                            };
+                            req.statusCode = 200;
+                            next();
+                        }).catch (function (err) {
+                            throw new Error(404);
+                        });
+                    }).catch (function (err) {
+                        next(err);
+                    });				
+				}
             } else {
                 next();
             }
         } catch (err) {
-            throw new Error(500);
+            next(err);
         }
     },
 
@@ -43,22 +68,43 @@ module.exports = {
         'use strict';
         try {
             if (req.method === 'GET') {
-
-                models[req.params.model].findAndCountAll().then(function (o) {
-                    res.result = {
-                        data : o.rows,
-                        total : o.count
-                    };
-					req.method = 200;
-                    next();
-                }).catch (function (error) {
-                    throw new Error(500);
-                });
+				// if model exists
+                if (models[req.params.model] !== undefined) {
+                    models[req.params.model].findAndCountAll().then(function (o) {
+                        res.result = {
+                            data : o.rows,
+                            total : o.count
+                        };
+                        req.statusCode = 200;
+                        next();
+                    }).catch (function (err) {
+                        throw new Error(404);
+                    });
+					
+				// if view exists
+                } else {
+                    models.sequelize.query("SELECT count(1) as total FROM `" + req.params.model + "`", {
+                        type : models.sequelize.QueryTypes.SELECT
+                    }).spread(function (total, metadata) {
+                        models.sequelize.query("SELECT * FROM `" + req.params.model + "`").spread(function (results, metadata) {
+                            res.result = {
+                                data : results,
+                                total : total.total
+                            };
+                            req.statusCode = 200;
+                            next();
+                        }).catch (function (err) {
+                            throw new Error(404);
+                        });
+                    }).catch (function (err) {
+                        throw new Error(404);
+                    });
+                }
             } else {
                 next();
             }
         } catch (err) {
-           throw new Error(500);
+            next(err);
         }
     }
 };

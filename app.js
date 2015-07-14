@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var util = require('util');
+var compression = require('compression');
+var responseTime = require('response-time');
 
 var verification = require('./routes/api/verification');
 var apiGET = require('./routes/api/get');
@@ -36,9 +38,11 @@ app.use(bodyParser.urlencoded({
 app.use(cookieParser());
 app.use(require('less-middleware')(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(compression());
+app.use(responseTime());
 
 app.use('/api/:model/:id', verification, apiHEAD, apiGET.getItem, apiPOST.updateItem, apiDEL, apiPATCH.updateItem, apiPUT.updateItem, apiOPT, response);
-app.use('/api/:model', verification, apiHEAD, apiGET.getCollection, apiPOST.createItem, apiOPT, response);
+app.use('/api/:model', verification, apiGET.getCollection , response);//apiHEAD, apiGET.getCollection, apiPOST.createItem, apiOPT
 //app.use('/users', users);
 app.use('/', routes);
 
@@ -81,6 +85,7 @@ if (app.get('env') === 'development') {
 
 // production error handler
 // no stacktraces leaked to user
+/*
 app.use(function (err, req, res, next) {
     'use strict';
     res.status(err.status || 500);
@@ -88,6 +93,7 @@ app.use(function (err, req, res, next) {
         message : err.message,
         error : {}
     });
-});
+	res.end();
+});*/
 
 module.exports = app;

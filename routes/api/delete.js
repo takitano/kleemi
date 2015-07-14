@@ -23,11 +23,11 @@ module.exports = function (req, res, next) {
                     };
                     next();
                 }).catch (function (error) {
-                    next(error);
+                    throw new Error(404);
                 });
 
-            }).catch (function (error) {
-                next(error);
+            }).catch (function (err) {
+                throw new Error(404);
             });
         } else {
             next();

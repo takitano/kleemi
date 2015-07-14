@@ -12,7 +12,7 @@ module.exports = function (req, res, next) {
         if (req.method === 'HEAD') {
 
             if (req.params.id !== undefined) {
-                throw('id  is not permitted');
+                throw(500);
             }
 
             res.result = {};

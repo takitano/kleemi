@@ -17,6 +17,9 @@
     "serve-favicon": "~2.2.1",
 	"mysql":"2.7.0",
     "supervisor": "0.6.0",
-    "sequelize": "3.2.0"
+    "sequelize": "3.2.0",
+	"js2xmlparser": "0.1.9",
+	"compression": "0.5.3",
+	"response-time" : "2.3.1"
   }
 }
